@@ -1,18 +1,17 @@
-<h1>Novo Usuário</h1>
+@extends('admin.layouts.app')
 
-<form action="{{ route('users.store') }}" method="POST">
-    @csrf()
-    <div>
-        <label for="name">Nome:</label>
-        <input type="text" id="name" name="name" required>
+@section('title', 'Criar Novo Usuário')
+
+@section('content')
+    @include('admin.users.partials.breadcrumb')
+    <div class="py-6">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight mb-4">
+            Novo Usuário
+        </h2>
     </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-    </div>
-    <div>
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <button type="submit">Criar Usuário</button>
-</form>
+    {{-- @include('admin.includes.errors') --}}
+    <form action="{{ route('users.store') }}" method="POST">
+        @include('admin.users.partials.form')
+    </form>
+@endsection
+
