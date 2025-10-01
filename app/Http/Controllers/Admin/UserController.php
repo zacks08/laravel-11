@@ -73,7 +73,7 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('message', 'Usuário não encontrado');
         }
         if (Auth::user()->id === $user->id) {
-            return back()->with('message', 'Você não pode deletar o seu próprio perfil');
+            return redirect()->route('users.index')->with('message', 'Você não pode deletar seu próprio usuário');
         }
         $user->delete();
 
