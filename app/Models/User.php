@@ -47,8 +47,8 @@ class User extends Authenticatable
     }
 
     public function isAdm():bool
-    {
-
+    
+{
   return in_array($this->email,config ('custom.admins'));
 
     }

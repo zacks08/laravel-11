@@ -68,7 +68,7 @@ class UserController extends Controller
 
     public function destroy(string $id)
     {
-      
+        
         if (!$user = User::find($id)) {
             return redirect()->route('users.index')->with('message', 'Usuário não encontrado');
         }

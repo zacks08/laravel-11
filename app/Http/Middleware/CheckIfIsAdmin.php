@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Middleware;
+
 use Closure;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckIfIsAdmin
@@ -15,12 +16,10 @@ class CheckIfIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (Auth::user()->isAdm()) {
+            return $next($request);
+        }
 
-       if (Auth::user()->isAdm()) {
-        return $next($request);
-       }    
-         return redirect()->route('home')->with('error','You do not have admin access.');
-        
-
+        return redirect()->route('home');
     }
 }
