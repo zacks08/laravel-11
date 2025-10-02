@@ -5,11 +5,25 @@ use App\Http\Middleware\CheckIfIsAdmin;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
+
+
+Route::resource('posts', PostController::class);
+
+// rota para criar comentário (POST)
+Route::post('posts/{post}/comments', [CommentController::class, 'store'])
+    ->name('comments.store')->middleware('auth');
+
+// remover comentário
+Route::delete('comments/{comment}', [CommentController::class, 'destroy'])
+    ->name('comments.destroy')->middleware('auth');
 
 Route::middleware('auth')
 ->prefix('admin')
 
 ->group(function () {
+
     Route::delete('/users/{user}/destroy', [UserController::class, 'destroy'])->name('users.destroy')->middleware(CheckIfIsAdmin::class);
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');

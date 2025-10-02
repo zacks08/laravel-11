@@ -52,4 +52,14 @@ class User extends Authenticatable
   return in_array($this->email,config ('custom.admins'));
 
     }
+    public function posts() {
+        return $this->hasMany(Post::class);
+        //esse usuário é dono de vários posts
+    }
+
+    public function comments() {
+        return $this->has_Many(Comment::class);
+        //busca os comentários da tabela comments
+        //os que possuem a coluna user_id === id user
+    }
 }

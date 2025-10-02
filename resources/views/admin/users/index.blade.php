@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="py-1 mb-4">
+<div class="py-1 mb-4 ">
     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight mb-4">
         Usuários
     </h2>
@@ -26,12 +26,12 @@
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
             @forelse ($users as $user)
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td class="px-6 py-4">{{ $user->name }}</td>
-                <td class="px-6 py-4">{{ $user->email }}</td>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+                <td class="px-6 py-4 text-white"  >{{ $user->name }}</td>
+                <td class="px-6 py-4  text-white" >{{ $user->email }}</td>
                 <td class="px-6 py-4">
-                    <a href="{{ route('users.edit', $user->id) }}">Edit</a>
-                    <a href="{{ route('users.show', $user->id) }}">Detalhes</a>
+                    <a href="{{ route('users.edit', $user->id) }}" class=" text-white">Edit</a>
+                    <a href="{{ route('users.show', $user->id) }}"class=" text-white">Detalhes</a>
 
                 </td>
             </tr>
