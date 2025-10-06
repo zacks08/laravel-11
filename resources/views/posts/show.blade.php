@@ -1,36 +1,57 @@
-@extends('layouts.app')
-
-@section('content')
+<a href="{{ route('posts.index', $post) }}">voltar</a>
 <h1>{{ $post->title }}</h1>
 <p>{{ $post->body }}</p>
 <p>Autor: {{ $post->user->name }}</p>
 
+<div>
+
+    @auth
+    @if(auth()->id() == $post->user_id || auth()->user()->is_admin || auth()->id() == $post->user_id)
+    <form method="POST" action="{{ route('posts.destroy',$post) }}">
+
+        @csrf
+        @method('DELETE')
+        <button type="submit" onclick="return confirm('tem certeza q deseja apagar esse post?')">Apagar</button>
+    </form>
+    @endif
+    @endauth
+    @auth
+    @if(auth()->id() == $post->user_id || auth()->user()->is_admin)
+    <a href="{{ route('posts.edit', $post) }}">Editar</a>
+    @endif
+    @endauth
+
+</div>
+
+
 <hr>
 <h3>Comentários</h3>
 @foreach($post->comments as $comment)
-    <div>
-        <strong>{{ $comment->user->name }}</strong> — {{ $comment->created_at->diffForHumans() }}
-        <p>{{ $comment->body }}</p>
+<div>
+    <strong>{{ $comment->user->name }}</strong> — {{ $comment->created_at->diffForHumans() }}
+    <p>{{ $comment->body }}</p>
 
-        @auth
-            @if(auth()->id() == $comment->user_id || auth()->user()->is_admin || auth()->id() == $post->user_id)
-                <form method="POST" action="{{ route('comments.destroy', $comment) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Apagar</button>
-                </form>
-            @endif
-        @endauth
-    </div>
-@endforeach
-
-@auth
-    <form action="{{ route('comments.store', $post) }}" method="POST">
+    @auth
+    @if(auth()->id() == $comment->user_id || auth()->user()->is_admin || auth()->id() == $post->user_id)
+    <form method="POST" action="{{ route('comments.destroy', $comment) }}">
         @csrf
-        <textarea name="body" required placeholder="Escreva seu comentário"></textarea>
-        <button type="submit">Comentar</button>
+        @method('DELETE')
+        <button type="submit">Apagar</button>
     </form>
+    @endif
+    @endauth
+
+
+
+</div>
+
+@endforeach
+@auth
+<form action="{{ route('comments.store', $post) }}" method="POST">
+    @csrf
+    <textarea name="body" required placeholder="Escreva seu comentário"></textarea>
+    <button type="submit">Comentar</button>
+</form>
 @else
-    <p>Faça login pra comentar.</p>
+<p>Faça login pra comentar.</p>
 @endauth
-@endsection

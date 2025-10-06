@@ -7,9 +7,10 @@
 <div class="py-1 mb-4 ">
     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight mb-4">
         Usuários
+        
     </h2>
 
-    <a href="{{route('users.create')}}"class="text-white">Cadastrar Novo Usuário
+    <a href="{{route('users.create')}}"class="text-white">cadastrar novo usuário
     </a>
 </div>
 
@@ -19,9 +20,9 @@
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <th scope="col" class="px-6 py-4">Nome</th>
-                <th scope="col" class="px-6 py-4">E-mail</th>
-                <th scope="col" class="px-6 py-4">Ações</th>
+                <th scope="col" class="px-6 py-4">nome</th>
+                <th scope="col" class="px-6 py-4">e-mail</th>
+                <th scope="col" class="px-6 py-4">ações</th>
             </tr>
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
@@ -30,8 +31,8 @@
                 <td class="px-6 py-4 text-white"  >{{ $user->name }}</td>
                 <td class="px-6 py-4  text-white" >{{ $user->email }}</td>
                 <td class="px-6 py-4">
-                    <a href="{{ route('users.edit', $user->id) }}" class=" text-white">Edit</a>
-                    <a href="{{ route('users.show', $user->id) }}"class=" text-white">Detalhes</a>
+                    <a href="{{ route('users.edit', $user->id) }}" class=" text-white">edit</a>
+                    <a href="{{ route('users.show', $user->id) }}"class=" text-white">detalhes</a>
 
                 </td>
             </tr>

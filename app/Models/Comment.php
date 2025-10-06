@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
-    protected $fillable = ['body', 'post_id', 'user_id'];
 
-    public function post(): BelongsTo
-    {
+    use HasFactory; // <- importante
+
+    protected $fillable = ['body', 'post_id', 'user_id'];//<- importante,faz com que o usuario possa inserir dados
+
+    public function post() {
         return $this->belongsTo(Post::class);
     }
 
-    public function user(): BelongsTo
-    {
+    public function user() {
         return $this->belongsTo(User::class);
     }
 }

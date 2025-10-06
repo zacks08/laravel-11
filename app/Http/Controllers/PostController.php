@@ -16,7 +16,8 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('user')->latest()->paginate(10);
-        return view('posts.index', compact('posts'));
+        return view('posts.index', compact('posts')); 
+        
     }
 
     public function create()
@@ -38,10 +39,17 @@ class PostController extends Controller
     }
 
     public function show(Post $post)
-    {
-        $post->load(['comments.user','user']);
-        return view('posts.show', compact('post'));
+    {         $post->load(['comments.user','user']);
+        return view('posts.show', compact('post')); 
     }
+    // Posts por usuário
+    public function postByUser($userId)
+    {
+        $posts = Post::where('user_id', $userId)->with('user')->latest()->paginate(10);
+        return view('posts.index', compact('posts'));
+    }    
+
+
 
     public function edit(Post $post)
     {
