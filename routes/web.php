@@ -7,8 +7,16 @@ use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIfIsAdmin;
 // Posts por usuário
-Route::get('/users/{user}/posts', [PostController::class, 'postByUser'])
-    ->name('users.posts');
+Route::get('/profile/{user}', [ProfileController::class, ])
+    ->name('profile.show');
+
+ Route::get('/users/{user}/posts', [PostController::class, 'postByUser'])
+    ->name('users.posts'); 
+
+
+
+
+
 // --------------------
 // Rotas públicas
 // --------------------
@@ -61,6 +69,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// --------------------
+// Dark, light
+// --------------------
+Route::post ('/togle-darkmode',function(){
+    session (['dark_mode' => !session('dark_mode',false)]);
+    return back();
+}) ->name('toggle.darkmode');
 
 // --------------------
 // Auth routes (login, register etc.)

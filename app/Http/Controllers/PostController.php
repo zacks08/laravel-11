@@ -15,7 +15,7 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::with('user')->latest()->paginate(10);
+        $posts = Post::with('user')->latest('updated_at')->paginate(10);
         return view('posts.index', compact('posts')); 
         
     }
@@ -28,8 +28,8 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'body' => 'required|string',
+            'title' => 'required|string|max:20',
+            'body' => 'required|string|max:255',
         ]);
 
         $data['user_id'] = Auth::id();
@@ -37,7 +37,6 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success','Post criado');
     }
-
     public function show(Post $post)
     {         $post->load(['comments.user','user']);
         return view('posts.show', compact('post')); 
@@ -45,7 +44,7 @@ class PostController extends Controller
     // Posts por usuário
     public function postByUser($userId)
     {
-        $posts = Post::where('user_id', $userId)->with('user')->latest()->paginate(10);
+        $posts = Post::where('user_id', $userId)->with('user')->latest('updated_at')->paginate(10);
         return view('posts.index', compact('posts'));
     }    
 
