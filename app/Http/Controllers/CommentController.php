@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
+
+
 {
     public function store(Request $request, Post $post)
     {
@@ -20,7 +22,7 @@ class CommentController extends Controller
 
         Comment::create($data);
 
-        return redirect()->route('posts.show', $post)->with('success','Comentário adicionado');
+        return redirect()->route('posts.show', $post)->with('success', 'Comentário adicionado');
     }
 
     public function destroy(Comment $comment)
@@ -32,6 +34,30 @@ class CommentController extends Controller
         }
 
         $comment->delete();
-        return back()->with('success','Comentário removido');
+        return back()->with('success', 'Comentário removido');
     }
+
+    public function edit(Comment $comment)
+    {
+
+        // só autor ou admin pode editar
+        if (Auth::id() !== $comment->user_id && !Auth::user()->is_admin) {
+            abort(403);
+        }
+        return view('posts.comment_edit', compact('comment'));
+    }
+
+    public function update(Request $request, Comment $comment )
+    {
+        if (Auth::id() !== $comment->user_id && !Auth::user()->is_admin) abort(403);
+
+        $data = $request->validate([
+
+            'body' => 'required|string',
+        ]);
+
+        $comment->update($data);
+        return redirect()->route('posts.show', $comment)->with('success', 'Post atualizado');
+    }
+
 }

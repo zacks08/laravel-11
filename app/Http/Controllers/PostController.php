@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,14 +11,14 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index','show']);
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
     public function index()
     {
-        $posts = Post::with('user')->latest('updated_at')->paginate(10);
-        return view('posts.index', compact('posts')); 
-        
+        $posts = Post::with('user')->withCount('comments')->latest('updated_at')->paginate(10);
+
+        return view('posts.index', compact('posts'));
     }
 
     public function create()
@@ -35,18 +36,19 @@ class PostController extends Controller
         $data['user_id'] = Auth::id();
         Post::create($data);
 
-        return redirect()->route('posts.index')->with('success','Post criado');
+        return redirect()->route('posts.index')->with('success', 'Post criado');
     }
     public function show(Post $post)
-    {         $post->load(['comments.user','user']);
-        return view('posts.show', compact('post')); 
+    {
+        $post->load(['comments.user', 'user']);
+        return view('posts.show', compact('post'));
     }
     // Posts por usuário
     public function postByUser($userId)
     {
-        $posts = Post::where('user_id', $userId)->with('user')->latest('updated_at')->paginate(10);
+        $posts = Post::where('user_id', $userId)->with('user')->withCount('comments')->latest('updated_at')->paginate(10);
         return view('posts.index', compact('posts'));
-    }    
+    }
 
 
 
@@ -59,6 +61,12 @@ class PostController extends Controller
         return view('posts.edit', compact('post'));
     }
 
+
+
+
+
+
+
     public function update(Request $request, Post $post)
     {
         if (Auth::id() !== $post->user_id && !Auth::user()->is_admin) abort(403);
@@ -69,7 +77,7 @@ class PostController extends Controller
         ]);
 
         $post->update($data);
-        return redirect()->route('posts.show', $post)->with('success','Post atualizado');
+        return redirect()->route('posts.show', $post)->with('success', 'Post atualizado');
     }
 
     public function destroy(Post $post)
@@ -78,6 +86,6 @@ class PostController extends Controller
         if (Auth::id() !== $post->user_id && !Auth::user()->is_admin) abort(403);
 
         $post->delete();
-        return redirect()->route('posts.index')->with('success','Post deletado');
+        return redirect()->route('posts.index')->with('success', 'Post deletado');
     }
 }

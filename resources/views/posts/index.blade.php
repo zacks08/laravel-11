@@ -21,10 +21,13 @@
             <p class="text-gray-700 dark:text-gray-300 mb-4">
                 {{ Str::limit($post->body, 150, '...') }}
             </p>
+            <p class="text-gray-400">comentarios {{$post->comments_count}}</p>
 
             <div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
                 <div class="flex items-center gap-2">
-                    <a href="{{ route('users.posts', $post->user->id) }}" 
+                    <a href="{{ route('users.posts', $post->user->id) }}"
+                    
+
                        class="font-medium text-blue-600 hover:text-blue-400">
                         {{ $post->user->name ?? 'Usuário não encontrado' }}
                     </a>

@@ -9,7 +9,8 @@
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
     <header class="p-4 bg-white dark:bg-gray-800 shadow">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <h1 class="font-bold text-xl">Meu Blog</h1>
+            <a href="{{route('posts.index')}}">    <h1 class="font-bold text-xl">Meu Blog</h1></a>
+        
             <!-- Botão toggle dark/light -->
             <form method="POST" action="{{ route('toggle.darkmode') }}">
                 @csrf

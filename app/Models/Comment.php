@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Comment extends Model
 {
@@ -19,4 +20,14 @@ class Comment extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function edit(Comment $comment)
+    {
+        // só autor ou admin pode editar
+        if (Auth::id() !== $comment->user_id && !Auth::user()->is_admin) {
+            abort(403);
+        }
+        return view('posts.edit', compact('post'));
+    }
+
 }

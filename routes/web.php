@@ -12,11 +12,6 @@ Route::get('/profile/{user}', [ProfileController::class, ])
 
  Route::get('/users/{user}/posts', [PostController::class, 'postByUser'])
     ->name('users.posts'); 
-
-
-
-
-
 // --------------------
 // Rotas públicas
 // --------------------
@@ -45,8 +40,22 @@ Route::resource('posts', PostController::class)->middleware([
 Route::post('posts/{post}/comments', [CommentController::class, 'store'])
     ->name('comments.store')->middleware('auth');
 
+
+
+Route::get('comments/{comment}/edit', [CommentController::class, 'edit'])
+    ->name('comments.edit')->middleware('auth');
+
+
+Route::get('/profile/{user}', [CommentController::class,'show' ])
+    ->name('comments.show');
+
+Route::put('comments/{comment}', [CommentController::class, 'update'])
+    ->name('comments.update')->middleware('auth');
+
 Route::delete('comments/{comment}', [CommentController::class, 'destroy'])
     ->name('comments.destroy')->middleware('auth');
+
+
 
 // --------------------
 // Rotas admin
