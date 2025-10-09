@@ -23,6 +23,17 @@ class User extends Authenticatable
         'password',
     ];
 
+
+
+protected static function booted()
+{
+    static::deleting(function ($user) {
+        $user->posts()->delete();     // deleta posts do usuário
+        $user->comments()->delete();  // deleta comentários do usuário
+    });
+}
+
+
     /**
      * The attributes that should be hidden for serialization.
      *

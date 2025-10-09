@@ -33,11 +33,9 @@
     @if(auth()->user()->posts->isEmpty())
         <p class="text-gray-500 dark:text-gray-400">Você ainda não publicou nenhum post.</p>
          <a href="{{route('posts.index')}}">
-     
-            <a href="{{ route('posts.create') }}"
-                class="mt-5  px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
-                Criar novo post
-            </a>
+  
+         
+        
     @else
         <div class="grid md:grid-cols-2 gap-6">
             @foreach(auth()->user()->posts as $post)

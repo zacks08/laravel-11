@@ -7,11 +7,11 @@ use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIfIsAdmin;
 // Posts por usuário
-Route::get('/profile/{user}', [ProfileController::class, ])
+Route::get('/profile/{user}', [ProfileController::class,])
     ->name('profile.show');
 
- Route::get('/users/{user}/posts', [PostController::class, 'postByUser'])
-    ->name('users.posts'); 
+Route::get('/users/{user}/posts', [PostController::class, 'postByUser'])
+    ->name('users.posts');
 // --------------------
 // Rotas públicas
 // --------------------
@@ -33,7 +33,7 @@ Route::resource('posts', PostController::class)->middleware([
     'store'  => 'auth',
     'edit'   => 'auth',
     'update' => 'auth',
-    'destroy'=> 'auth',
+    'destroy' => 'auth',
 ]);
 
 // Comentários
@@ -46,7 +46,7 @@ Route::get('comments/{comment}/edit', [CommentController::class, 'edit'])
     ->name('comments.edit')->middleware('auth');
 
 
-Route::get('/profile/{user}', [CommentController::class,'show' ])
+Route::get('/profile/{user}', [CommentController::class, 'show'])
     ->name('comments.show');
 
 Route::put('comments/{comment}', [CommentController::class, 'update'])
@@ -55,6 +55,14 @@ Route::put('comments/{comment}', [CommentController::class, 'update'])
 Route::delete('comments/{comment}', [CommentController::class, 'destroy'])
     ->name('comments.destroy')->middleware('auth');
 
+// --------------------
+// Rotas de publica de usuario
+// --------------------
+Route::get('users',[UserController::class,'index'])->name('users.index');
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
 
 
 // --------------------
@@ -64,7 +72,6 @@ Route::middleware(['auth', CheckIfIsAdmin::class])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        // Users CRUD
         Route::resource('users', UserController::class)->except(['show']);
         Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
@@ -74,18 +81,21 @@ Route::middleware(['auth', CheckIfIsAdmin::class])
 // Rotas de perfil
 // --------------------
 Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');    
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show'); 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');    
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 // --------------------
 // Dark, light
 // --------------------
-Route::post ('/togle-darkmode',function(){
-    session (['dark_mode' => !session('dark_mode',false)]);
+Route::post('/togle-darkmode', function () {
+    session(['dark_mode' => !session('dark_mode', false)]);
     return back();
-}) ->name('toggle.darkmode');
+})->name('toggle.darkmode');
 
 // --------------------
 // Auth routes (login, register etc.)

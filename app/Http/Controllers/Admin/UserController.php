@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+
 class UserController extends Controller
 {
     public function index()
@@ -53,7 +54,7 @@ class UserController extends Controller
         $user->update($data);
 
         return redirect()
-            ->route('users.index')
+            ->route('posts.index')
             ->with('success', 'Usuário editado com sucesso');
     }
 
@@ -62,13 +63,12 @@ class UserController extends Controller
         if (!$user = User::find($id)) {
             return redirect()->route('users.index')->with('message', 'Usuário não encontrado');
         }
-
         return view('admin.users.show', compact('user'));
     }
 
     public function destroy(string $id)
     {
-        
+
         if (!$user = User::find($id)) {
             return redirect()->route('users.index')->with('message', 'Usuário não encontrado');
         }
