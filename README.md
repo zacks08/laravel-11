@@ -5,7 +5,7 @@
 ### Passo a passo
 Clone Repositório
 ```sh
-git clone -b laravel-11-with-php-8.3 https://github.com/zacks08/laravel-11
+git clone https://github.com/zacks08/laravel-11
 ```
 ```sh
 cd app-laravel
