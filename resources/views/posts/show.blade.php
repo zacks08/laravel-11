@@ -26,7 +26,7 @@
     @if(auth()->id() == $post->user_id || auth()->user()->is_admin)
     <div class="flex gap-4 mb-6">
         <a href="{{ route('posts.edit',$post)}}"
-            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+            class="px-4 py-2 bg-none text-blue-500 rounded hover:text-blue-700 transition">
             Editar
         </a>
         <form method="POST" action="{{ route('posts.destroy', $post) }}">
@@ -34,7 +34,7 @@
             @method('DELETE')
             <button type="submit"
                 onclick="return confirm('Tem certeza que deseja apagar este post?')"
-                class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+                class="px-4 py-2 bg-none text-red-500 rounded hover:text-red-700 transition">
                 Apagar
             </button>
         </form>
@@ -47,40 +47,40 @@
     <!-- Comentários -->
     <h3 class="text-xl font-semibold mb-4">Comentários</h3>
 
-    @forelse($post->comments as $comment)
-    <div class="mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-sm">
-        <div class="flex justify-between items-center mb-2">
-            <strong class="text-gray-900 dark:text-gray-100">{{ $comment->user->name }}</strong>
-            <span class="text-sm text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
-        </div>
-        
-        <p class="text-gray-700 dark:text-gray-200 mb-2">{{ $comment->body }}</p>
+@forelse($post->comments as $comment)
+<div class="mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-sm">
+    <div class="flex justify-between items-center mb-2">
+        <strong class="text-gray-900 dark:text-gray-100">{{ $comment->user->name }}</strong>
+        <span class="text-sm text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
+    </div>
+    
+    <p class="text-gray-700 dark:text-gray-200 mb-2">{{ $comment->body }}</p>
 
-        @auth
-        @if(auth()->id() == $comment->user_id || auth()->user()->is_admin || auth()->id() == $post->user_id)
-        
-          <a href="{{ route('comments.edit',$comment)}}"
-            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-            Editar
+    @auth
+    @if(auth()->id() == $comment->user_id || auth()->user()->is_admin || auth()->id() == $post->user_id)
+    <div class="flex gap-2 mt-2">
+        <a href="{{ route('comments.edit', $comment->id) }}"
+           class="px-2 py-1 bg-none text-blue-500 rounded hover:text-blue-700 transition">
+           Editar
         </a>        
-
 
         <form method="POST" action="{{ route('comments.destroy', $comment) }}">
             @csrf
             @method('DELETE')
             <button type="submit"
-                class="text-red-600 hover:text-red-400 text-sm font-medium"
-                onclick="return confirm ('Tem certeza q deseja apagar esse comentario ?')">
+                class="px-2 py-1 bg-none text-red-500 rounded hover:text-red-700 transition"
+                onclick="return confirm ('Tem certeza que deseja apagar esse comentário?')">
                 Apagar
             </button>
-
         </form>
-        @endif
-        @endauth
     </div>
-    @empty
-    <p class="text-gray-500">Nenhum comentário ainda.</p>
-    @endforelse
+    @endif
+    @endauth
+</div>
+@empty
+<p class="text-gray-500">Nenhum comentário ainda.</p>
+@endforelse
+
 
     <!-- Formulário de comentário -->
     @auth

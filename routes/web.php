@@ -40,7 +40,7 @@ Route::resource('posts', PostController::class)->middleware([
 Route::post('posts/{post}/comments', [CommentController::class, 'store'])
     ->name('comments.store')->middleware('auth');
 
-
+Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
 
 Route::get('comments/{comment}/edit', [CommentController::class, 'edit'])
     ->name('comments.edit')->middleware('auth');

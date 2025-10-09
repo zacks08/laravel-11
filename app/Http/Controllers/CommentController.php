@@ -44,7 +44,7 @@ class CommentController extends Controller
         if (Auth::id() !== $comment->user_id && !Auth::user()->is_admin) {
             abort(403);
         }
-        return view('posts.comment_edit', compact('comment'));
+        return view('comments.edit', compact('comment'));
     }
 
     public function update(Request $request, Comment $comment )
@@ -53,11 +53,11 @@ class CommentController extends Controller
 
         $data = $request->validate([
 
-            'body' => 'required|string',
+            'body' => 'required|string|max:200',
         ]);
 
         $comment->update($data);
-        return redirect()->route('posts.show', $comment)->with('success', 'Post atualizado');
+        return redirect()->route('posts.show', $comment->post_id)->with('success', 'Post atualizado');
     }
 
 }
