@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\CommentController;
+
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIfIsAdmin;
 // Posts por usuário
@@ -24,45 +24,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// --------------------
-// Rotas de posts
-// --------------------
-// Todas rotas CRUD de posts
-Route::resource('posts', PostController::class)->middleware([
-    'create' => 'auth',
-    'store'  => 'auth',
-    'edit'   => 'auth',
-    'update' => 'auth',
-    'destroy' => 'auth',
-]);
 
-// Comentários
-Route::post('posts/{post}/comments', [CommentController::class, 'store'])
-    ->name('comments.store')->middleware('auth');
-
-Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
-
-Route::get('comments/{comment}/edit', [CommentController::class, 'edit'])
-    ->name('comments.edit')->middleware('auth');
-
-
-Route::get('/profile/{user}', [CommentController::class, 'show'])
-    ->name('comments.show');
-
-Route::put('comments/{comment}', [CommentController::class, 'update'])
-    ->name('comments.update')->middleware('auth');
-
-Route::delete('comments/{comment}', [CommentController::class, 'destroy'])
-    ->name('comments.destroy')->middleware('auth');
-
-// --------------------
-// Rotas de publica de usuario
-// --------------------
-Route::get('users',[UserController::class,'index'])->name('users.index');
-Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
-Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
 
 
 // --------------------
@@ -75,19 +37,18 @@ Route::middleware(['auth', CheckIfIsAdmin::class])
         Route::resource('users', UserController::class)->except(['show']);
         Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
-    });
-
-// --------------------
-// Rotas de perfil
-// --------------------
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');    
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show'); 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');    
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
+
+
+ 
+
+
+//outra forma de fazer a importaçao sem precisar mecher no /RouteServiceProvider.php
+// importar o arquivo comments.php
+/* require __DIR__.'/comments.php'; */
+
+
+
 
 // --------------------
 // Dark, light
