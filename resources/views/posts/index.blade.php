@@ -6,7 +6,8 @@
 <div class="max-w-4xl mx-auto mt-10">
     <div class="flex justify-between items-center mb-6">
         @auth
-        <a href="{{route('users.show',auth()->user()->name )}}"class="text-3xl font-bold text-gray-900 dark:text-gray-100"><span>{{ auth()->user()->name }}</span> <!-- so funciona se estiver nesse formato,pel fato do auth carregar os dados dos usuarios em qualuqer view ,assim n precisando colocar nada no controller --></a>
+        <a href="{{route('profile.show',auth()->user()->id)}}"class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+            <span>{{ auth()->user()->name }}</span> <!-- so funciona se estiver nesse formato,pel fato do auth carregar os dados dos usuarios em qualuqer view ,assim n precisando colocar nada no controller --></a>
         </a>
         @endauth
         <a href="{{route('posts.index')}}">
@@ -26,7 +27,7 @@
         <p class="text-gray-700 dark:text-gray-300 mb-4">
             {{ Str::limit($post->body, 150, '...') }}
         </p>
-        <p class="text-gray-400">comentarios {{$post->comments_count}}</p>
+        <p class="text-gray-400">comentarios {{$post->comments->count()}}</p>
 
         <div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
             <div class="flex items-center gap-2">

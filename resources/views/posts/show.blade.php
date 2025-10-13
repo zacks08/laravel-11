@@ -70,7 +70,7 @@
             <button type="submit"
                 class="px-2 py-1 bg-none text-red-500 rounded hover:text-red-700 transition"
                 onclick="return confirm ('Tem certeza que deseja apagar esse comentário?')">
-                Apagar
+               Apagar 
             </button>
         </form>
     </div>

@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\CommentController;
+use Illuminate\Support\Facades\Route;
 
 
 
@@ -13,7 +14,7 @@ Route::get('comments/{comment}/edit', [CommentController::class, 'edit'])
     ->name('comments.edit')->middleware('auth');
 
 
-Route::get('/profile/{user}', [CommentController::class, 'show'])
+Route::get('/comments/{user}', [CommentController::class, 'show'])
     ->name('comments.show');
 
 Route::put('comments/{comment}', [CommentController::class, 'update'])
