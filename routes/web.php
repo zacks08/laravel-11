@@ -5,8 +5,7 @@ use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 // Posts por usuário
-Route::get('/profile/{user}', [ProfileController::class,])
-    ->name('profile.show');
+
 
 Route::get('/users/{user}/posts', [PostController::class, 'postByUser'])
     ->name('users.posts');
