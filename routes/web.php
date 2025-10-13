@@ -1,11 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\UserController;
-
-
-
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\CheckIfIsAdmin;
+
 // Posts por usuário
 Route::get('/profile/{user}', [ProfileController::class,])
     ->name('profile.show');
@@ -24,32 +22,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-
-
-// --------------------
-// Rotas admin
-// --------------------
-Route::middleware(['auth', CheckIfIsAdmin::class])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::resource('users', UserController::class)->except(['show']);
-        Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
-        Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
-});
-
-
- 
-
-
-//outra forma de fazer a importaçao sem precisar mecher no /RouteServiceProvider.php
-// importar o arquivo comments.php
-/* require __DIR__.'/comments.php'; */
-
-
-
-
 // --------------------
 // Dark, light
 // --------------------
@@ -62,3 +34,8 @@ Route::post('/togle-darkmode', function () {
 // Auth routes (login, register etc.)
 // --------------------
 require __DIR__ . '/auth.php';
+
+
+//outra forma de fazer a importaçao sem precisar mecher no /RouteServiceProvider.php
+// importar o arquivo comments.php
+/* require __DIR__.'/posts.php'; */
