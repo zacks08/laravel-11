@@ -6,7 +6,7 @@
 <div class="max-w-4xl mx-auto mt-10">
     <div class="flex justify-between items-center mb-6">
         @auth
-        <a href="{{route('profile.show',auth()->user()->id)}}"class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        <a href="{{route('profile.show',auth()->user()->id)}}" class="text-3xl font-bold text-gray-900 dark:text-gray-100">
             <span>{{ auth()->user()->name }}</span> <!-- so funciona se estiver nesse formato,pel fato do auth carregar os dados dos usuarios em qualuqer view ,assim n precisando colocar nada no controller --></a>
         </a>
         @endauth
@@ -19,7 +19,11 @@
     </div>
 
     @forelse($posts as $post)
-    <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-xl shadow mb-5 hover:shadow-lg transition">
+    <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-xl shadow mb-5 hover:shadow-lg transition"> 
+        <a href="{{ route('profile.show', $post->user->id) }}"
+            class="font-medium text-blue-600 hover:text-blue-400">
+            {{ $post->user->name ?? 'Usuário não encontrado' }}
+        </a>
         <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
             {{ $post->title }}
         </h2>
@@ -31,12 +35,7 @@
 
         <div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
             <div class="flex items-center gap-2">
-                    <a href="{{ route('users.posts', $post->user->id) }}"
 
-
-                    class="font-medium text-blue-600 hover:text-blue-400">
-                    {{ $post->user->name ?? 'Usuário não encontrado' }}
-                </a>
                 <span class="text-gray-400">•</span>
                 <span>{{ $post->created_at->diffForHumans() }}</span>
             </div>
