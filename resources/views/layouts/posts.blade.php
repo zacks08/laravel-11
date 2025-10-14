@@ -11,14 +11,15 @@
         <div class="max-w-4xl mx-auto flex justify-between items-center">
        
             <a href="{{route('posts.index')}}">    <h1 class="font-bold text-xl">Meu Blog</h1></a>
+            <a href="{{route('posts.index')}}">    <h1 class="font-bold text-xl"></h1></a>
         
             <!-- Botão toggle dark/light -->
-            <form method="POST" action="{{ route('toggle.darkmode') }}">
+           <!--  <form method="POST" action="{{ route('toggle.darkmode') }}">
                 @csrf
                 <button type="submit" class="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition">
                     {{ session('dark_mode') ? 'Light Mode' : 'Dark Mode' }}
                 </button>
-            </form>
+            </form> -->
         </div>
     </header>
 
