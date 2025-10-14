@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Post;
+use App\Models\Comment;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable , SoftDeletes;
+    use HasApiTokens,HasFactory, Notifiable , SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,8 +25,6 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
-
 
 protected static function booted()
 {
