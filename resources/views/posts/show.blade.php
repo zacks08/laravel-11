@@ -56,26 +56,33 @@
     
     <p class="text-gray-700 dark:text-gray-200 mb-2">{{ $comment->body }}</p>
 
-    @auth
-    @if(auth()->id() == $comment->user_id || auth()->user()->is_admin || auth()->id() == $post->user_id)
-    <div class="flex gap-2 mt-2">
-        <a href="{{ route('comments.edit', $comment->id) }}"
-           class="px-2 py-1 bg-none text-blue-500 rounded hover:text-blue-700 transition">
-           Editar
-        </a>        
+   @auth
+    <div class="flex gap-4 mb-6">
 
-        <form method="POST" action="{{ route('comments.destroy', $comment) }}">
-            @csrf
-            @method('DELETE')
-            <button type="submit"
-                class="px-2 py-1 bg-none text-red-500 rounded hover:text-red-700 transition"
-                onclick="return confirm ('Tem certeza que deseja apagar esse comentário?')">
-               Apagar 
-            </button>
-        </form>
+        {{-- Botão EDITAR: aparece só pro dono do comentário ou admin --}}
+        @if(auth()->id() == $comment->user_id || auth()->user()->is_admin)
+            <a href="{{ route('comments.edit', $comment) }}"
+                class="px-4 py-2 bg-none text-blue-500 rounded hover:text-blue-700 transition">
+                Editar
+            </a>
+        @endif
+
+        {{-- Botão APAGAR: aparece pro dono do post, dono do comentário ou admin --}}
+        @if(auth()->id() == $post->user_id || auth()->id() == $comment->user_id || auth()->user()->is_admin)
+            <form method="POST" action="{{ route('comments.destroy', $comment) }}">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                    onclick="return confirm('Tem certeza que deseja apagar este post?')"
+                    class="px-4 py-2 bg-none text-red-500 rounded hover:text-red-700 transition">
+                    Apagar
+                </button>
+            </form>
+        @endif
+
     </div>
-    @endif
-    @endauth
+@endauth
+
 </div>
 @empty
 <p class="text-gray-500">Nenhum comentário ainda.</p>
