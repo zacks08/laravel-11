@@ -25,9 +25,9 @@ class RoutesServiceProvider extends ServiceProvider
             ->group(base_path('routes/web.php'));
 
         // API padrão
-       /*  Route::middleware('api')
+        Route::middleware('api')
             ->prefix('api')
-            ->group(base_path('routes/api.php')); */
+            ->group(base_path('routes/api.php'));
 
         // Organização de rotas que estavm dentro do /web.php
         Route::middleware('web')
