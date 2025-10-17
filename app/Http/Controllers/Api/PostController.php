@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -10,16 +11,17 @@ class PostController extends Controller
 {
     public function index()
     {
-        return response()->json(Post::with('user')->withCount('comments')->latest()->get());
+        return response()->json(Post::with('user')->withCount('comments')->latest('updated_at')->get());
     }
 
     public function show($id)
     {
         $post = Post::with(['user', 'comments.user'])->findOrFail($id);
+
         return response()->json($post);
     }
 
-    public function store(Request $request,)
+    public function store(Request $request)
     {
         $data = $request->validate([
             'title' => 'required|string|max:50',
@@ -29,17 +31,19 @@ class PostController extends Controller
         $data['user_id'] = Auth::id();
 
         $post = Post::create($data);
+
         return response()->json([
             'message' => 'Post criado com sucesso',
             'post' => $post,
-
         ], 201);
     }
 
     public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
-        if (Auth::id() !== $post->user_id) return response()->json(['error' => 'Não autorizado'], 403);
+        if (Auth::id() !== $post->user_id) {
+            return response()->json(['error' => 'Não autorizado'], 403);
+        }
 
         $post->update($request->validate([
             'title' => 'string|max:50',
@@ -47,16 +51,19 @@ class PostController extends Controller
         ]));
 
         return response()->json([
-            'message' =>'Post atualizado com sucesso',
-            'post' =>$post]);
+            'message' => 'Post atualizado com sucesso',
+            'post' => $post]);
     }
 
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
-        if (Auth::id() !== $post->user_id) return response()->json(['error' => 'Não autorizado'], 403);
+        if (Auth::id() !== $post->user_id) {
+            return response()->json(['error' => 'Não autorizado'], 403);
+        }
 
         $post->delete();
+
         return response()->json([
             'message' => 'Post deletado com sucesso',
             'conteudo do post' => $post]);

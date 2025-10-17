@@ -16,12 +16,12 @@ class CommentController extends Controller
             'body' => 'required|string|max:500',
         ]);
 
-        $post = Post::findOrFail($postId);
+        $comment = Comment::findOrFail($postId);
 
-        if (!$post) {
-            return response()->json(['error' => 'Post não encontrado'], 404);
+        if (!$comment) {
+            return response()->json(['error' => 'comment não encontrado'], 404);
         }
-
+        $post = Post::findOrFail($postId);
         $data['user_id'] = Auth::id();
         $data['post_id'] = $post->id;
 
@@ -32,22 +32,20 @@ class CommentController extends Controller
             'comment' => $comment], 201);
     }
 
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, $id)
     {
-        if (Auth::id() !== $comment->user_id && !Auth::user()->is_admin) {
-            abort(403);
+        $comment = Comment::findOrFail($id);
+        if (Auth::id() !== $comment->user_id) {
+            return response()->json(['error' => 'Não autorizado'], 403);
         }
 
-        $data = $request->validate([
-            'body' => 'required|string|max:200',
-        ]);
-
-        $comment->update($data);
+        $comment->update($request->validate([
+            'body' => 'string|max:255',
+        ]));
 
         return response()->json([
-            'message' => 'Comentário atualizado com sucesso',
-            'comment' => $comment,
-        ]);
+            'message' => 'comment atualizado com sucesso',
+            'comment' => $comment]);
     }
 
     public function destroy(Comment $comment)

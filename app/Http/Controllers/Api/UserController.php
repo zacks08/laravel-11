@@ -1,16 +1,18 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
     public function index()
     {
-        return response()->json(User::all());
+        return response()->json(User::latest('updated_at')->get());
     }
 
     public function show($id)
@@ -22,16 +24,18 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $validated = $request->validate([
-            'name' => ['string', 'max:30'],
-            'email' => ['email', 'max:50', Rule::unique('users')->ignore($user->id)],
-        ]);
+        if (Auth::id() !== $user->id) {
+            return response()->json(['error' => 'Não autorizado'], 403);
+        }
 
+        $validated = $request->validate([
+            'name' => 'string|max:50',
+            'email' => 'string|max:255', Rule::unique('users')->ignore($user->id),
+        ]);
         $user->update($validated);
 
         return response()->json([
-            'message' => 'Usuário atualizado com sucesso',
-            'user' => $user
-        ]);
+            'message' => 'seu usuario foi atualizado com sucesso',
+            'user' => $user], 201);
     }
 }
