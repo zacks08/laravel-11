@@ -19,7 +19,7 @@ class PostController extends Controller
         return response()->json($post);
     }
 
-    public function store(Request $request)
+    public function store(Request $request,)
     {
         $data = $request->validate([
             'title' => 'required|string|max:50',
@@ -29,7 +29,11 @@ class PostController extends Controller
         $data['user_id'] = Auth::id();
 
         $post = Post::create($data);
-        return response()->json($post, 201);
+        return response()->json([
+            'message' => 'Post criado com sucesso',
+            'post' => $post,
+
+        ], 201);
     }
 
     public function update(Request $request, $id)

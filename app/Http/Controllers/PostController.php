@@ -37,19 +37,21 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Post criado');
     }
+
     public function show(Post $post)
     {
         $post->load(['comments.user', 'user']);
+
         return view('posts.show', compact('post'));
     }
+
     // Posts por usuário
     public function postByUser($userId)
     {
         $posts = Post::where('user_id', $userId)->with('user')->withCount('comments')->latest('updated_at')->paginate(10);
+
         return view('posts.index', compact('posts'));
     }
-
-
 
     public function edit(Post $post)
     {
@@ -57,13 +59,15 @@ class PostController extends Controller
         if (Auth::id() !== $post->user_id && !Auth::user()->is_admin) {
             abort(403);
         }
+
         return view('posts.edit', compact('post'));
     }
 
-
     public function update(Request $request, Post $post)
     {
-        if (Auth::id() !== $post->user_id && !Auth::user()->is_admin) abort(403);
+        if (Auth::id() !== $post->user_id && !Auth::user()->is_admin) {
+            abort(403);
+        }
 
         $data = $request->validate([
             'title' => 'required|string|max:255',
@@ -71,15 +75,19 @@ class PostController extends Controller
         ]);
 
         $post->update($data);
+
         return redirect()->route('posts.show', $post)->with('success', 'Post atualizado');
     }
 
     public function destroy(Post $post)
     {
         // só autor ou admin
-        if (Auth::id() !== $post->user_id && !Auth::user()->is_admin) abort(403);
+        if (Auth::id() !== $post->user_id && !Auth::user()->is_admin) {
+            abort(403);
+        }
 
         $post->delete();
+
         return redirect()->route('posts.index')->with('success', 'Post deletado');
     }
 }
