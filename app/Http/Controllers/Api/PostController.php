@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,14 +12,16 @@ class PostController extends Controller
 {
     public function index()
     {
-        return response()->json(Post::with('user')->withCount('comments')->latest('updated_at')->get());
+        $posts = Post::with('user')->withCount('comments')->latest('updated_at')->get();
+
+        return PostResource::collection($posts);
     }
 
     public function show($id)
     {
-        $post = Post::with(['user', 'comments.user'])->findOrFail($id);
+        $post = Post::with(['user', 'comments.user'])->withCount('comments')->findOrFail($id);
 
-        return response()->json($post);
+        return new PostResource($post);
     }
 
     public function store(Request $request)
@@ -58,7 +61,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
-        if (Auth::id() !== $post->user_id) {
+        if (Auth::id() !== $post->user_id && !Auth::user()->is_admin) {
             return response()->json(['error' => 'Não autorizado'], 403);
         }
 

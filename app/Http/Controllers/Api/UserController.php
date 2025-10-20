@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        return response()->json(User::latest('updated_at')->get());
+        $users = User::latest('updated_at')->get();
+
+        return UserResource::collection($users);
     }
 
     public function show($id)

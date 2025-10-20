@@ -48,14 +48,17 @@ class CommentController extends Controller
             'comment' => $comment]);
     }
 
-    public function destroy(Comment $comment)
+    public function destroy($id)
     {
-        if (Auth::id() !== $comment->user_id) {
+        $comment = Comment::findOrFail($id);
+        if (Auth::id() !== $comment->user_id && !Auth::user()->is_admin) {
             return response()->json(['error' => 'Não autorizado'], 403);
         }
 
         $comment->delete();
 
-        return response()->json(['message' => 'Comentário removido']);
+        return response()->json([
+            'message' => 'Comentário removido com sucesso ',
+            'comentario' => $comment], 200);
     }
 }
